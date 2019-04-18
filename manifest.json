@@ -1,0 +1,15 @@
+{
+  "name": "How Fast Are You ?",
+  "short_name": "How Fast Are You ?",
+  "start_url": ".",
+  "author": "Arun & Ankit",
+  "display": "fullscreen",
+  "theme_color": "#1B5682",
+"offline_enabled": true,
+ "background_color": "#1B5682",
+  "icons": [{
+    "src": "icon.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }]
+}

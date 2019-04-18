@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<!-- <html manifest="4ap.appcache"> -->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <title>How Fast Are You ?</title>
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="shortcut icon" href="icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+    @import url('https://fonts.googleapis.com/css?family=Saira');
+    </style>
+
+    <style media="screen">
+    body{
+      margin: 0px !important;
+      font-family: 'Saira', sans-serif;
+      color:white;
+    }
+    #canvas{
+      height: 100vh;
+      width: 100vw;
+      display: table;
+      position: absolute;
+    }
+    #canvas2{
+      z-index: 99;
+      position: absolute;
+      height: 100vh;
+      width: 100vw;
+      /*display: table;*/
+    }
+
+
+    .fa-2 {
+        font-size: 2em
+    }
+
+    .fa-3 {
+        font-size: 4em
+    }
+
+    .fa-4 {
+        font-size: 7em
+    }
+
+    .fa-5 {
+        font-size: 12em
+    }
+
+    .fa-6 {
+        font-size: 20em
+    }
+
+    #child {
+        display: table-cell;
+        vertical-align: middle;
+    }
+    </style>
+  </head>
+  <body>
+    <div id="canvas">
+    <div id="child" style="text-align:center;">
+      <div class="start">
+        <h1>How Fast Are You ?</h1>
+        <h3> Click anywhere to start </h3>
+        <i class="fa fa-mouse-pointer" aria-hidden="true"></i>
+      </div>
+      <div  style="display:none; color:white;" class="wait">
+<i class="fa fa-eye fa-3" aria-hidden="true"></i>
+<!-- <i class="fa fa-eye fa-3" aria-hidden="true"></i> -->
+        <h2> Click when color changes </h2>
+      </div>
+      <div  style="display:none; color:white;" class="green">
+<i class="fa fa-eye fa-3" aria-hidden="true"></i>
+        <h2> Tap Now </h2>
+      </div>
+      <div  style="display:none; color:black;" class="success">
+<i class="fa fa-check fa-2" style="color:green;" aria-hidden="true"></i>
+        <h1 style="margin-bottom:5px;"> Your Time is </h1>
+          <p><span style="font-size: 80px;color : green; font-weight: 400;" class="timeTaken"></span> ms</p>
+        <h5> Your Highscore is : <span class="recordText"></span> ms</h5>
+        <h3> Tap To Retry</h3>
+      </div>
+      <div  style="display:none; color:white;" class="error">
+<i class="fa fa-exclamation-circle fa-2" aria-hidden="true"></i>
+        <h1> OOPS, you tapped early</h1>
+        <h3> Tap to retry again </h3>
+      </div>
+    </div>
+
+    </div>
+    <div id="canvas2">
+    </div>
+
+
+    <script type="text/javascript">
+      var c = document.getElementById("canvas");
+      var c2 = document.getElementById("canvas2");
+      var startText = document.getElementsByClassName("start");
+      var waitText = document.getElementsByClassName("wait");
+      var greenText = document.getElementsByClassName("green");
+      var successText = document.getElementsByClassName("success");
+      var errorText = document.getElementsByClassName("error");
+      var timeTakenText = document.getElementsByClassName("timeTaken");
+      var recordText = document.getElementsByClassName("recordText");
+    c2.addEventListener("mousedown", mouseDown, true);
+          c.style.backgroundColor = '#7B8D8E';
+
+    var state = "start";
+
+    var startTime,endTime;
+    var timer1;
+    function randomTimer() {
+         timer1 = setTimeout(function () {
+          startTime = new Date().getTime();
+          state = "green";
+          c.style.backgroundColor = '#F1A94E';
+          waitText[0].style.display = 'none';
+          greenText[0].style.display = 'block';
+         }, Math.floor(Math.random()*(5000-2000+1)+2000));
+    }
+
+    function mouseDown() {
+      if (state == "start") {
+          c.style.backgroundColor = '#44B3C2';
+          startText[0].style.display = 'none';
+          waitText[0].style.display = 'block';
+          state = "wait";
+          randomTimer();
+        console.log("click HUa");
+      }
+      else if (state=="wait") {
+          clearTimeout(timer1);
+          c.style.backgroundColor = '#E45641';
+          waitText[0].style.display = 'none';
+          errorText[0].style.display = 'block';
+          state = "error";
+      }
+      else if (state=="error" || state == "success") {
+          c.style.backgroundColor = '#7B8D8E';
+          successText[0].style.display = 'none';
+          errorText[0].style.display = 'none';
+          startText[0].style.display = 'block';
+          state = "start";
+      }
+      else if (state=="green") {
+          endTime = new Date().getTime();
+          var timeTaken = endTime - startTime;
+          timeTakenText[0].innerHTML = timeTaken + '';
+          if (localStorage.getItem("score")) {
+            if (timeTaken < parseInt(localStorage.getItem("score"))) {
+                localStorage.setItem("score" , timeTaken);
+                recordText[0].innerHTML = timeTaken + '';
+            }else {
+                recordText[0].innerHTML = localStorage.getItem("score");
+            }
+          }else {
+                localStorage.setItem("score" , timeTaken);
+                recordText[0].innerHTML = timeTaken + '';
+          }
+          c.style.backgroundColor = 'white';
+          greenText[0].style.display = 'none';
+          successText[0].style.display = 'block';
+          state = "success";
+      }
+    }
+    </script>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-104625028-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+    </script>
+  </body>
+</html>
