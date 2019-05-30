@@ -1,7 +1,7 @@
 # How Fast Are You ?
 A very simple game to find your insane reactions.
 
-Visit Live Site : [Here](arunyadav.com/how-fast-are-you)
+Visit Live Site : [Here](https://arunyadav.com/how-fast-are-you)
 
 ## Contribution and updates
 
